@@ -3,6 +3,7 @@
 	<name>WSUnidadResidencial</name>
 	<comment></comment>
 	<projects>
+		<project>UnidadResidencial</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
