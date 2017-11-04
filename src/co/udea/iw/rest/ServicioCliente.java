@@ -40,10 +40,9 @@ public class ServicioCliente {
 				
 				ClienteWS clienteWS= new ClienteWS();
 				
-				clienteWS.setCedula(cliente.getCedula());
-				clienteWS.setApellidos(cliente.getApellidos());
-				clienteWS.setCorreoElectronico(cliente.getCorreoElectronico());
-				clienteWS.setNombres(cliente.getNombres());
+				clienteWS.setCedula(cliente.getIdentificacion());
+				clienteWS.setApellidos(cliente.getApellido());
+				clienteWS.setNombres(cliente.getNombre());
 				
 				clientes.add(clienteWS);
 				System.out.println("agrego el cliente ");
