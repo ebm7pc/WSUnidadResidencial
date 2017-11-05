@@ -75,8 +75,8 @@ public class ServicioCliente {
 			@QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido,
 			@QueryParam("identificacion") Long identificacion, @QueryParam("apto") String apto,
 			@QueryParam("tel") Long tel, @QueryParam("cel") Long cel, @QueryParam("mail") String mail,
-			@QueryParam("vehi") Boolean vehi, @QueryParam("resp") String resp, @QueryParam("fsalida") Date fsalida) 
-					throws RemoteException, IWServiceException{ 
+			@QueryParam("vehi") boolean vehi, @QueryParam("resp") String resp, @QueryParam("fsalida") Date fsalida) 
+					throws RemoteException, IWServiceException{
 		try {
 			clienteservice.guardarCliente(ficho, tipo, nombre, apellido, identificacion, apto, tel, cel, mail, vehi, resp, fsalida);
 		} catch (IWDaoException e) {
@@ -84,8 +84,9 @@ public class ServicioCliente {
 		} catch (IWServiceException ex) {
 			throw new IWServiceException(ex.getMessage());
 		}
-		return "";
+		return "Se guardó el cliente";
 	}
+	
 	
 	@Path("ActualizarCliente")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -101,6 +102,6 @@ public class ServicioCliente {
 		} catch (IWServiceException ex) {
 			throw new IWServiceException(ex.getMessage());
 		}
-		return "";
+		return "Se actualizó correctamente.";
 	}
 }
