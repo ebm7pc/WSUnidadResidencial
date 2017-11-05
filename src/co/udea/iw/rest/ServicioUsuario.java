@@ -41,8 +41,8 @@ public class ServicioUsuario {
 			usuario=usuarioservice.obtenerUsuario(nombre);
 		} catch (IWDaoException e) {
 			throw new RemoteException(e.getMessage());
-		} catch (IWServiceException ex) {
-			throw new IWServiceException(ex.getMessage());
+		} catch (IWServiceException e) {
+			throw new IWServiceException(e.getMessage());
 		}
 		return usuario;
 	}
@@ -55,10 +55,57 @@ public class ServicioUsuario {
 		try {
 			usuarioservice.guardarUsuario(nombre, pwd, tipo);
 		} catch (IWDaoException e) {
-			throw new RemoteException(e.getMessage());
-		} catch (IWServiceException ex) {
-			throw new IWServiceException(ex.getMessage());
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
 		}
 		return "Se guardó";
+	}
+	
+	@Path("ActualizarUsuario")
+	@Produces(MediaType.TEXT_PLAIN)
+	@PUT
+	public String actualizarUsuario(@QueryParam("nombre") String nombre, @QueryParam("pwd") String pwd) 
+					throws RemoteException, IWServiceException{ 
+		try {
+			usuarioservice.modificarUsuario(nombre, pwd);
+		} catch (IWDaoException e) {
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
+		}
+		return "Se actualizo el usuario";
+	}
+	
+	@Path("EliminarUsuario")
+	@Produces(MediaType.TEXT_PLAIN)
+	@PUT
+	public String eliminarUsuario(@QueryParam("nombre") String nombre) throws RemoteException, IWServiceException{ //List<ClienteWS>
+		
+		try {
+			usuarioservice.eliminarUsuario(nombre);
+		} catch (IWDaoException e) {
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
+		}
+		return "Usuario eliminado";
+	}
+	
+	@Path("LoginUsuario")
+	@Produces(MediaType.TEXT_PLAIN)
+	@GET
+	public String loginUsuario(@QueryParam("nombre") String nombre, @QueryParam("pwd") String pwd) 
+					throws RemoteException, IWServiceException{ 
+		
+		String loguin=null;
+		try {
+			loguin= usuarioservice.iniciarSeccion(nombre, pwd);
+		} catch (IWDaoException e) {
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
+		}
+		return loguin;
 	}
 }
