@@ -25,15 +25,29 @@ import co.udea.iw.exception.IWServiceException;
 import co.udea.iw.service.AccesoService;
 import co.udea.iw.service.ClienteService;
 
+/**
+ * 
+ * @author Eduardo Bedoya, Yesid Montoya
+ *Clase para implementar los servicios web del módulo de accesos
+ */
 @Path("Acceso")
 @Component
 public class ServicioAcceso {
-	
+	/**
+	 * Objeto de tipo Logger para generar los mensajes de eventos de errores y excepciones
+	 */
 	private Logger logger = Logger.getRootLogger();
 
 	@Autowired
 	private AccesoService accesoservice;
-	
+	/**
+	 * Método para guardar un acceso
+	 * @param id identificador del acceso
+	 * @param idCliente número de ficho de cliente que accedió
+	 * @return cadena de caractéres con mensaje de acceso
+	 * @throws RemoteException
+	 * @throws IWServiceException
+	 */
 	@Path("InsertarAcceso")
 	@Produces(MediaType.TEXT_PLAIN)
 	@POST
@@ -51,7 +65,12 @@ public class ServicioAcceso {
 		}
 		return "Se guardó el acceso";
 	}
-	
+	/**
+	 * Método para obtener la lista de todos los accesos
+	 * @return lista de todos los accesos
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ListaAccesos")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
@@ -66,7 +85,13 @@ public class ServicioAcceso {
 		}	
 		return listaAccesos;
 	}
-	
+	/**
+	 * Método para para obtener una lista de accesos filtrada por tipo de cliente
+	 * @param tipo tipo de cliente
+	 * @return lista de accesos por tipo de cliente
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ObtenerByTipo")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
@@ -81,7 +106,13 @@ public class ServicioAcceso {
 		}
 		return listaAccesos;
 	}
-	
+	/**
+	 * Método para obtener la lista de accesos de un cliente determinado
+	 * @param cliente número de ficho del cliente
+	 * @return lista de accesos de un cliente
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ObtenerByCliente")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET

@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +23,26 @@ import co.udea.iw.exception.IWDaoException;
 import co.udea.iw.exception.IWServiceException;
 import co.udea.iw.service.ClienteService;
 
+/**
+ * 
+ * @author Eduardo Bedoya, Yesid Montoya
+ *Clase para implementar los servicios web del módulo de Cliente
+ */
 @Path("Cliente")
 @Component
 public class ServicioCliente {
-	
+	/**
+	 * Objeto de tipo Logger para generar los mensajes de eventos de errores y excepciones
+	 */
+	private Logger logger = Logger.getRootLogger();
 	@Autowired
 	private ClienteService clienteservice;
 	
-	
+	/**
+	 * Método para obtener la lista de todos los clientes
+	 * @return lista de todos los clientes
+	 * @throws IWDaoException
+	 */
 	@Path("ListaClientes")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
@@ -46,28 +59,46 @@ public class ServicioCliente {
 		
 		return listaClientes;
 	}
-	
-	
+	/**
+	 * Método para obtener un cliente determinado
+	 * @param ficho número del ficho asociado al cliente
+	 * @return cliente con el ficho asociado
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ObtenerCliente")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
 	public Cliente obtenerCliente(@QueryParam("ficho") Integer ficho) throws RemoteException, IWServiceException{ //List<ClienteWS>
-		
 		Cliente cliente= null;
 		try {
 			
 			cliente=clienteservice.obtener(ficho);
-			
 		} catch (IWDaoException e) {
 			throw new RemoteException(e.getMessage());
 		} catch (IWServiceException e) {
 			throw new IWServiceException(e.getMessage());
-		}
-		
+		}	
 		return cliente;
 	}
-	
-	
+	/**
+	 * Método para guardar un cliente
+	 * @param ficho ficho del cliente
+	 * @param tipo tipo de cliente
+	 * @param nombre nombre de cliente
+	 * @param apellido apellido del cliente
+	 * @param identificacion cédula del cliente
+	 * @param apto número de partamento donde vive el cliente si es Residente o del apartamento al que se dirige si es visitante
+	 * @param tel teefono del cliente
+	 * @param cel celular del cliente
+	 * @param mail correo electrónico del cliente
+	 * @param vehi booleano para determinar si el cliente tiene vehículo(s) o no
+	 * @param res persona responsable de recibir al cliente si es un Visitante
+	 * @param fsalida fecha de expiración del permiso de acceso si el cliente es un Visitante
+	 * @return String con mensaje de si cliente se agregó correctamente
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("InsertarCliente")
 	@Produces(MediaType.TEXT_PLAIN)
 	@POST
@@ -86,8 +117,19 @@ public class ServicioCliente {
 		}
 		return "Se guardó el cliente";
 	}
-	
-	
+	/**
+	 * Método para modificar un cliente
+	 * @param ficho número del ficho asociado al cliente
+	 * @param apto apartamento del cliente
+	 * @param tel telefono del cliente
+	 * @param cel celular del cliente
+	 * @param mail correo electrónico del cliente
+	 * @param vehi booleano para deteminar si tiene vehículo o no
+	 * @param fsalida fecha de expiracion de permiso de acceso para cientes de tipo Visitante
+	 * @return String con mensaje de si cliente se actualizó correctamente
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ActualizarCliente")
 	@Produces(MediaType.TEXT_PLAIN)
 	@PUT
@@ -104,8 +146,13 @@ public class ServicioCliente {
 		}
 		return "Se actualizó correctamente.";
 	}
-	
-	
+	/**
+	 * Método para eliminar un cliente
+	 * @param ficho número de ficho asiciado al cliente que se va a eliminar
+	 * @return String con mensaje de si cliente se eliminó correctamente
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("EliminarCliente")
 	@Produces(MediaType.TEXT_PLAIN)
 	@PUT
@@ -122,7 +169,13 @@ public class ServicioCliente {
 		return "Se eliminó correctamente";
 	}
 	
-	
+	/**
+	 * Método para obtener un cliente por tipo
+	 * @param tipo tipo de cliente: Residente o Visitante
+	 * @return lista con los clientes de tipo Residente o tipo visitante
+	 * @throws RemoteException
+	 * @throws IWServiceException
+	 */
 	@Path("ObtenerByTipo")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET

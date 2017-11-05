@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +25,27 @@ import co.udea.iw.exception.IWServiceException;
 import co.udea.iw.service.ClienteService;
 import co.udea.iw.service.UsuarioService;
 
-
+/**
+ * 
+ * @author Eduardo Bedoya, Yesid Montoya
+ *Clase para implementar los servicios web del módulo de Usuario
+ */
 @Path("Usuario")
 @Component
 public class ServicioUsuario {
-	
+	/**
+	 * Objeto de tipo Logger para generar los mensajes de eventos de errores y excepciones
+	 */
+	private Logger logger = Logger.getRootLogger();
 	@Autowired
 	private UsuarioService usuarioservice;
-	
+	/**
+     * Método para obtenerun usuario por su nombre
+     * @param nombre nombre del usuario
+     * @return objeto de tipo Usuario
+     * @throws IWDaoException
+     * @throws IWServiceException
+     */
 	@Path("ObtenerUsuario")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
@@ -46,7 +60,15 @@ public class ServicioUsuario {
 		}
 		return usuario;
 	}
-	
+	/**
+	 * Método para guardar un usuario
+	 * @param nombre nombre del usuario
+	 * @param pwd contraseña del usuario
+	 * @param tipo tipo de usuario: Administrador o Regular
+	 * @return String con mensaje de si usuario se guardó
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("InsertarUsuario")
 	@Produces(MediaType.TEXT_PLAIN)
 	@POST
@@ -61,7 +83,14 @@ public class ServicioUsuario {
 		}
 		return "Se guardó";
 	}
-	
+	/**
+	 * Método para modificar a contraseña de un usuario
+	 * @param nombre nombre de usuario
+	 * @param pwd contraseña nueva
+	 * @return String con mensaje de actualización correcta
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("ActualizarUsuario")
 	@Produces(MediaType.TEXT_PLAIN)
 	@PUT
@@ -76,7 +105,13 @@ public class ServicioUsuario {
 		}
 		return "Se actualizo el usuario";
 	}
-	
+	/**
+	 * Método para eliminar un usuario
+	 * @param nombre nombre del usuario a eliminar
+	 * @return String con mensaje de si usuario fue eliminado
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("EliminarUsuario")
 	@Produces(MediaType.TEXT_PLAIN)
 	@PUT
@@ -91,7 +126,14 @@ public class ServicioUsuario {
 		}
 		return "Usuario eliminado";
 	}
-	
+	/**
+	 * Método para verificar un inicio de sesión correcto o no
+	 * @param nombre nombre del usuario que inicia sesión
+	 * @param pwd contraseña del usuario que inicia sesión
+	 * @return cadena de caractéres con mensaje si inició sesión correctamente o no
+	 * @throws IWDaoException
+	 * @throws IWServiceException
+	 */
 	@Path("LoginUsuario")
 	@Produces(MediaType.TEXT_PLAIN)
 	@GET
