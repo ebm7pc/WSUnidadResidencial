@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,8 @@ import co.udea.iw.service.ClienteService;
 @Component
 public class ServicioAcceso {
 	
+	private Logger logger = Logger.getRootLogger();
+
 	@Autowired
 	private AccesoService accesoservice;
 	
@@ -40,8 +43,11 @@ public class ServicioAcceso {
 			accesoservice.guardarAcceso(id, idCliente);
 		} catch (IWDaoException e) {
 			return e.getMessage();
+//			logger.getAppender(e.getMessage());
+			//logger.error("no se guardo DAO" + e);
 		} catch (IWServiceException e) {
 			return e.getMessage();
+			//logger.error("no se guardo SERVICE" + e);
 		}
 		return "Se guardó el acceso";
 	}
