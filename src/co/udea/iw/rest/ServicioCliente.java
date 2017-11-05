@@ -60,8 +60,8 @@ public class ServicioCliente {
 			
 		} catch (IWDaoException e) {
 			throw new RemoteException(e.getMessage());
-		} catch (IWServiceException ex) {
-			throw new IWServiceException(ex.getMessage());
+		} catch (IWServiceException e) {
+			throw new IWServiceException(e.getMessage());
 		}
 		
 		return cliente;
@@ -80,9 +80,9 @@ public class ServicioCliente {
 		try {
 			clienteservice.guardarCliente(ficho, tipo, nombre, apellido, identificacion, apto, tel, cel, mail, vehi, resp, fsalida);
 		} catch (IWDaoException e) {
-			throw new RemoteException(e.getMessage());
-		} catch (IWServiceException ex) {
-			throw new IWServiceException(ex.getMessage());
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
 		}
 		return "Se guardó el cliente";
 	}
@@ -98,10 +98,45 @@ public class ServicioCliente {
 		try {
 			clienteservice.modificarCliente(ficho, apto, tel, cel, mail, vehi, fsalida);
 		} catch (IWDaoException e) {
-			throw new RemoteException(e.getMessage());
-		} catch (IWServiceException ex) {
-			throw new IWServiceException(ex.getMessage());
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
 		}
 		return "Se actualizó correctamente.";
 	}
+	
+	
+	@Path("EliminarCliente")
+	@Produces(MediaType.TEXT_PLAIN)
+	@PUT
+	public String eliminarCliente(@QueryParam("ficho") Integer ficho) throws RemoteException, IWServiceException{ //List<ClienteWS>
+		try {
+			
+			clienteservice.eliminarCliente(ficho);
+			
+		} catch (IWDaoException e) {
+			return e.getMessage();
+		} catch (IWServiceException e) {
+			return e.getMessage();
+		}
+		return "Se eliminó correctamente";
+	}
+	
+	
+	@Path("ObtenerByTipo")
+	@Produces(MediaType.APPLICATION_XML)
+	@GET
+	public List<Cliente> obtenerByTipo(@QueryParam("tipo") String tipo) throws RemoteException, IWServiceException{ //List<ClienteWS>
+		
+		List<Cliente> listaClientes= null;
+		try {
+			listaClientes=clienteservice.obtenerPorTipo(tipo);
+		} catch (IWDaoException e) {
+			throw new RemoteException(e.getMessage());
+		}catch (IWServiceException e) {
+			throw new IWServiceException(e.getMessage());
+		}
+		return listaClientes;
+	}
+	
 }
