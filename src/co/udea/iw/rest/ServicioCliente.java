@@ -192,4 +192,19 @@ public class ServicioCliente {
 		return listaClientes;
 	}
 	
+	@Path("Acceso")
+	@Produces(MediaType.TEXT_PLAIN)
+	@GET
+	public String acceso(@QueryParam("ficho") Integer ficho) throws RemoteException, IWServiceException{ //List<ClienteWS>
+		
+		String acceso="El cliente no esta regitrado en el sistema"; 
+		try {
+			acceso=clienteservice.comprobarAcceso(ficho);
+		} catch (IWDaoException e) {
+			e.getMessage();
+		}catch (IWServiceException e) {
+			e.getMessage();
+		}
+		return acceso;
+	}
 }

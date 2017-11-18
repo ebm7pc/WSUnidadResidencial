@@ -140,14 +140,14 @@ public class ServicioUsuario {
 	public String loginUsuario(@QueryParam("nombre") String nombre, @QueryParam("pwd") String pwd) 
 					throws RemoteException, IWServiceException{ 
 		
-		String loguin=null;
+		String login="Falló el Inicio de Sesión, Compruebe sus Datos";
 		try {
-			loguin= usuarioservice.iniciarSeccion(nombre, pwd);
-		} catch (IWDaoException e) {
-			return e.getMessage();
-		} catch (IWServiceException e) {
-			return e.getMessage();
+			login= usuarioservice.iniciarSeccion(nombre, pwd);
+		} catch (IWDaoException e) {			
+			e.getMessage();
+		} catch (IWServiceException e) {			
+			e.getMessage();
 		}
-		return loguin;
+		return login;
 	}
 }
