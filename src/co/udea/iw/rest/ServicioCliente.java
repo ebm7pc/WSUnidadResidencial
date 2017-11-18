@@ -1,6 +1,8 @@
 package co.udea.iw.rest;
 
 import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,23 +102,29 @@ public class ServicioCliente {
 	 * @throws IWServiceException
 	 */
 	@Path("InsertarCliente")
-	@Produces(MediaType.TEXT_PLAIN)
-	@POST
-	public String insertaCliente(@QueryParam("ficho") Integer ficho, @QueryParam("tipo") String tipo,
-			@QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido,
-			@QueryParam("identificacion") Long identificacion, @QueryParam("apto") String apto,
-			@QueryParam("tel") Long tel, @QueryParam("cel") Long cel, @QueryParam("mail") String mail,
-			@QueryParam("vehi") boolean vehi, @QueryParam("resp") String resp, @QueryParam("fsalida") Date fsalida) 
-					throws RemoteException, IWServiceException{
-		try {
-			clienteservice.guardarCliente(ficho, tipo, nombre, apellido, identificacion, apto, tel, cel, mail, vehi, resp, fsalida);
-		} catch (IWDaoException e) {
-			return e.getMessage();
-		} catch (IWServiceException e) {
-			return e.getMessage();
-		}
-		return "Se guardó el cliente";
-	}
+	 @Produces(MediaType.TEXT_PLAIN)
+	 @GET
+	 public String insertaCliente(@QueryParam("ficho") Integer ficho, @QueryParam("tipo") String tipo,
+	   @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido,
+	   @QueryParam("identificacion") Long identificacion, @QueryParam("apto") String apto,
+	   @QueryParam("tel") Long tel, @QueryParam("cel") Long cel, @QueryParam("mail") String mail,
+	   @QueryParam("vehi") boolean vehi, @QueryParam("resp") String resp, @QueryParam("fsalida") String fsalida) 
+	     throws RemoteException, IWServiceException, ParseException{
+	  SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+	  Date fsalida1 = null;
+	  try {
+	   fsalida1=formatoDelTexto.parse(fsalida + " 23:59:59");
+	   clienteservice.guardarCliente(ficho, tipo, nombre, apellido, identificacion, apto, tel, cel, mail, vehi, resp, fsalida1);
+	  } catch (IWDaoException e) {
+	   return e.getMessage();
+	  } catch (IWServiceException e) {
+	   return e.getMessage();
+	  } catch (ParseException ex) {
+	      ex.printStackTrace();
+
+	  }
+	  return "Se guardó el cliente";
+	 }
 	/**
 	 * Método para modificar un cliente
 	 * @param ficho número del ficho asociado al cliente

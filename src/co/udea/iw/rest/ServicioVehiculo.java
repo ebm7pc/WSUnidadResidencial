@@ -49,7 +49,7 @@ public class ServicioVehiculo {
 	 */
 	@Path("InsertarVehiculo")
 	@Produces(MediaType.TEXT_PLAIN)
-	@POST
+	@GET
 	public String insertaVehicullo(@QueryParam("placa")String placa, @QueryParam("marca") String marca, @QueryParam("cliente") Integer cliente) 
 					throws RemoteException, IWServiceException{ 
 		try {
