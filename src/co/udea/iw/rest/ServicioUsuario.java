@@ -49,7 +49,7 @@ public class ServicioUsuario {
 	@Path("ObtenerUsuario")
 	@Produces(MediaType.APPLICATION_XML)
 	@GET
-	public Usuario obtenerUsuario(@QueryParam("nombre") String nombre) throws RemoteException, IWServiceException{ //List<ClienteWS>
+	public Usuario obtenerUsuario(@QueryParam("nombre") String nombre) throws IWDaoException, RemoteException, IWServiceException{ //List<ClienteWS>
 		Usuario usuario = null;
 		try {
 			usuario=usuarioservice.obtenerUsuario(nombre);
@@ -137,15 +137,15 @@ public class ServicioUsuario {
 	@Path("LoginUsuario")
 	@Produces(MediaType.TEXT_PLAIN)
 	@GET
-	public String loginUsuario(@QueryParam("nombre") String nombre, @QueryParam("pwd") String pwd) 
-					throws RemoteException, IWServiceException{ 
+	public String loginUsuario(@QueryParam("nombre") String nombre, @QueryParam("pwd") String pwd)throws RemoteException, IWServiceException{ 
 		
+
 		String login="Falló el Inicio de Sesión, Compruebe sus Datos";
 		try {
 			login= usuarioservice.iniciarSeccion(nombre, pwd);
-		} catch (IWDaoException e) {			
+		}catch (IWDaoException e) {
 			e.getMessage();
-		} catch (IWServiceException e) {			
+		} catch (IWServiceException e) {
 			e.getMessage();
 		}
 		return login;
